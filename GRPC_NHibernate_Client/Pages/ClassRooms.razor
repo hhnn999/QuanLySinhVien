@@ -1,0 +1,38 @@
+﻿@page "/classrooms"
+@using AntDesign
+
+<h3>Quản lý lớp học</h3>
+
+<Table @ref="_table"
+       TItem="ClassRoomRecord"
+       PageSize="8"
+       Total="_total"
+       DataSource="ClassRoomRecords"
+       @bind-SelectedRows="_selectedRows"
+       OnChange="OnChange">
+
+    <TitleTemplate>
+        <Flex Justify="FlexJustify.End" Gap="FlexGap.Middle">
+            <Button Type="ButtonType.Primary"
+                    OnClick="async () => await StartEdit(null)">
+                New
+            </Button>
+
+            <Button Danger
+                    Disabled="!_selectedRows.Any()"
+                    OnClick="DeleteAll">
+                Delete
+            </Button>
+        </Flex>
+    </TitleTemplate>
+
+    <ColumnDefinitions Context="row">
+        <Selection />
+        <GenerateColumns />
+
+        <ActionColumn Title="Action">
+            <a @onclick="() => Delete(row)">Delete</a>
+        </ActionColumn>
+    </ColumnDefinitions>
+
+</Table>

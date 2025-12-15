@@ -1,0 +1,18 @@
+﻿@page "/teacherForm"
+
+@using AntDesign
+@using static GRPC_NHibernate_Client.Pages.Teachers
+
+<Form @ref="FormRef"
+      Model="Model"
+      LabelColSpan="6"
+      WrapperColSpan="18">
+
+    <GenerateFormItem NotGenerate="@(x => x == nameof(TeacherRecord.Id))" />
+
+</Form>
+
+@code {
+    [Parameter] public TeacherRecord Model { get; set; } = new();
+    public IForm FormRef { get; set; } = default!;
+}

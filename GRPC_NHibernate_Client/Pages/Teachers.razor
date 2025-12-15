@@ -1,0 +1,26 @@
+﻿@page "/teachers"
+
+<h3>Quản lý giáo viên</h3>
+
+<Table @ref="_table" TItem="TeacherRecord" PageSize="8" Total="_total" DataSource="_dataSource"
+       @bind-SelectedRows="_selectedRows" OnChange="OnChange">
+    <TitleTemplate>
+        <Flex Justify="FlexJustify.End" Gap="@("10")">
+            <Button Type="ButtonType.Primary"
+                    OnClick="async () => await StartEdit(null)">
+                New
+            </Button>
+            <Button Disabled="!_selectedRows.Any()" Danger OnClick="DeleteAll">Delete</Button>
+        </Flex>
+    </TitleTemplate>
+
+    <ColumnDefinitions Context="row">
+        <Selection />
+        <GenerateColumns Definitions="@((n, c) => { c.Filterable = true; c.Sortable = true; })" />
+
+        <ActionColumn Title="Action">
+            <Text Type="TextElementType.Secondary">Edit</Text>
+            <a @onclick="() => Delete(row)">Delete</a>
+        </ActionColumn>
+    </ColumnDefinitions>
+</Table>

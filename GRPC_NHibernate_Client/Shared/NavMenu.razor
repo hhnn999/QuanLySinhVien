@@ -1,0 +1,57 @@
+﻿@using GRPC_NHibernate_Client.Pages
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">GRPC_NHibernate_Client</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/students">
+                <span class="oi oi-people" aria-hidden="true"></span> Students
+            </NavLink>
+        </div>
+    
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/student-chart">
+                <span class="oi oi-people" aria-hidden="true"></span> StudentChart
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/classrooms">
+                <span class="oi oi-people" aria-hidden="true"></span> ClassRoom
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/teachers">
+                <span class="oi oi-people" aria-hidden="true"></span> Teacher
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = false;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private Type? MyComponentType = typeof(Students);
+}

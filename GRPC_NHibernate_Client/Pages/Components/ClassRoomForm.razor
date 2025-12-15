@@ -1,0 +1,17 @@
+﻿@page "/classform"
+@using AntDesign
+@using static GRPC_NHibernate_Client.Pages.ClassRooms
+
+<Form @ref="FormRef"
+      Model="Model"
+      LabelColSpan="6"
+      WrapperColSpan="18">
+
+    <GenerateFormItem NotGenerate="@(x => x == nameof(ClassRoomRecord.Id))" />
+
+</Form>
+
+@code {
+    [Parameter] public ClassRoomRecord Model { get; set; } = new();
+    public IForm FormRef { get; set; } = default!;
+}

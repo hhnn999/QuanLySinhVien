@@ -1,0 +1,16 @@
+﻿@page "/student-chart"
+
+<h3 style="text-align:center">Biểu đồ số sinh viên theo lớp</h3>
+
+@if (isLoading)
+{
+    <p><em>Đang tải dữ liệu biểu đồ...</em></p>
+}
+else if (chartData.Count > 0)
+{
+    <AntDesign.Charts.Column Data="chartData" Config="config" /> 
+}
+else
+{
+    <p>Không có dữ liệu sinh viên để thống kê.</p>
+}
