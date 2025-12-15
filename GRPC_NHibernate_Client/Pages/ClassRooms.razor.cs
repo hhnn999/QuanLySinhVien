@@ -21,6 +21,8 @@ namespace GRPC_NHibernate_Client.Pages
         ITable _table = default!;
         List<ClassRoomRecord> ClassRoomRecords = new();
         int _total;
+        bool showModal = false;
+        ClassRoomRecord modalModel = new();
 
         void OnChange(QueryModel<ClassRoomRecord> query)
         {
@@ -33,7 +35,6 @@ namespace GRPC_NHibernate_Client.Pages
 
         async Task StartEdit(ClassRoomRecord? row)
         {
-            Guid a = new();
             var data = row == null
                 ? new ClassRoomRecord()
                 : new ClassRoomRecord
@@ -45,40 +46,32 @@ namespace GRPC_NHibernate_Client.Pages
                     TeacherId = row.TeacherId
                 };
 
-            ClassRoomForm formComponent = null!; 
-            ModalRef<bool> modalRef = null!;
+            showModal = true;
+        }
 
-            modalRef = ModalService.CreateModal<bool>(new ModalOptions
+        void CloseModal()
+        {
+            showModal = false;
+        }
+      
+        async Task Save(ClassRoomRecord data)
+        {
+            await SaveClassroomDatas(data);
+
+            showModal = false;
+        }
+
+        async Task SaveClassroomDatas(ClassRoomRecord data)
+        {
+            await ClassApi.Create(new ClassRequest
             {
-                Title = "New Classroom",
-                Width = 800,
-
-                Content = (RenderFragment)(builder =>
-                {
-                    builder.OpenComponent<ClassRoomForm>(0);
-                    builder.AddAttribute(1, "Model", data);
-                    builder.AddComponentReferenceCapture(2,
-                        r => formComponent = (ClassRoomForm)r);
-                    builder.CloseComponent();
-                }),
-
-                OnOk = async (_) =>
-                {
-                    if (!formComponent.FormRef.Validate())
-                        return;
-
-                    await ClassApi.Create(new ClassRequest
-                    {
-                        Code = data.Code,
-                        Name = data.Name,
-                        Subject = data.Subject,
-                        TeacherId = data.TeacherId
-                    });
-
-                    await Reload();
-                    await modalRef.CloseAsync();
-                }
+                Code = data.Code,
+                Name = data.Name,
+                Subject = data.Subject,
+                TeacherId = data.TeacherId
             });
+
+            await Reload();
         }
 
         async Task Delete(ClassRoomRecord row)

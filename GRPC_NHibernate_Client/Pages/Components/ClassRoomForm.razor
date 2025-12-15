@@ -1,17 +1,37 @@
-﻿@page "/classform"
-@using AntDesign
+﻿@using AntDesign
 @using static GRPC_NHibernate_Client.Pages.ClassRooms
+<Modal Visible="visibleModal" OnOk="OnOk" OnCancel="Cancel">
+    <Form @ref="FormRef"
+          Model="Model"
+          LabelColSpan="6"
+          WrapperColSpan="18">
 
-<Form @ref="FormRef"
-      Model="Model"
-      LabelColSpan="6"
-      WrapperColSpan="18">
+        <GenerateFormItem NotGenerate="@(x => x == nameof(ClassRoomRecord.Id))" />
 
-    <GenerateFormItem NotGenerate="@(x => x == nameof(ClassRoomRecord.Id))" />
+    </Form>
+</Modal>
 
-</Form>
 
 @code {
     [Parameter] public ClassRoomRecord Model { get; set; } = new();
+    [Parameter] public bool visibleModal { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback<ClassRoomRecord> OnSubmitAsync { get; set; }
     public IForm FormRef { get; set; } = default!;
+        
+    public async Task OnOk()
+    {
+        if (!FormRef.Validate())
+            throw new InvalidOperationException("Validation Failed");
+
+        if (OnSubmitAsync.HasDelegate)
+            await OnSubmitAsync.InvokeAsync(Model);
+    }
+
+    public async Task Cancel()
+    {
+        if (OnClose.HasDelegate)
+            await OnClose.InvokeAsync();
+    }
 }
+        
